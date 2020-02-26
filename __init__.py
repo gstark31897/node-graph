@@ -1,27 +1,28 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
+from kivy.uix.scatter import Scatter
+from kivy.uix.scatterlayout import ScatterLayout
+from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.behaviors import DragBehavior
+from kivy.uix.textinput import TextInput
 
-class Node(Widget):
+class NodeNumericInput(Widget):
+    pass
+
+class NodeWidget(Scatter):
     def __init__(self, *args, **kwargs):
-        self.offset = None
-        super(Node, self).__init__(*args, **kwargs)
-
-    def on_touch_down(self, touch):
-        if abs(touch.x - self.pos[0] - self.width/2) < self.width/2:
-            if abs(touch.y - self.pos[1] - self.height/2) < self.height/2:
-                print(self.pos, (touch.x, touch.y))
-                self.offset = (self.pos[0] - touch.x, self.pos[1] - touch.y)
-                print(self.offset)
-
-    def on_touch_up(self, touch):
-        self.offset = None
-
-    def on_touch_move(self, touch):
-        if self.offset:
-            self.pos = (touch.x + self.offset[0], touch.y + self.offset[1])
+        super(NodeWidget, self).__init__(*args, **kwargs)
+        self.in1 = NodeNumericInput()
+        self.ids.inputs.add_widget(self.in1)
+        self.textinput2 = TextInput()
+        self.ids.outputs.add_widget(self.textinput2)
 
 class NodeGraph(Widget):
-    pass
+    def __init__(self, *args, **kwargs):
+        super(NodeGraph, self).__init__(*args, **kwargs)
+        print("building")
+        self.add_widget(NodeWidget())
 
 class NodeApp(App):
     def build(self):
